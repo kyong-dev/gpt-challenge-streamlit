@@ -113,21 +113,13 @@ if api_key and file:
 
     for input in inputs:
         # result = chain.invoke({"context": retriever, "question": input, "history": load_memory({})})
-        context_docs = retriever.get_relevant_documents(input)
-        context = "\n".join([doc.page_content for doc in context_docs])
-        result = chain.invoke(
-            {
-                "context": context,
-                "question": input,
-                "history": load_memory({}),
-            }
-        )
 
+        result = chain.invoke(input)
         # Save to memory
         memory.save_context(
             {"input": input},
-            {"output": result["content"]},
+            {"output": result.content},
         )
         
         # Print result
-        st.write(result["content"])
+        st.write(result.content)
