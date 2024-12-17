@@ -113,7 +113,8 @@ if api_key and file:
 
     for input in inputs:
         # result = chain.invoke({"context": retriever, "question": input, "history": load_memory({})})
-        context = retriever.retrieve(input)  # Retrieve context as a string
+        context_docs = retriever.get_relevant_documents(input)
+        context = "\n".join([doc.page_content for doc in context_docs])
         result = chain.invoke(
             {
                 "context": context,
