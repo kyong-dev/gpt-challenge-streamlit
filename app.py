@@ -112,7 +112,15 @@ if api_key and file:
     ]
 
     for input in inputs:
-        result = chain.invoke({"context": retriever, "question": input, "history": load_memory({})})
+        # result = chain.invoke({"context": retriever, "question": input, "history": load_memory({})})
+        context = retriever.retrieve(input)  # Retrieve context as a string
+        result = chain.invoke(
+            {
+                "context": context,
+                "question": input,
+                "history": load_memory({}),
+            }
+        )
 
         # Save to memory
         memory.save_context(
